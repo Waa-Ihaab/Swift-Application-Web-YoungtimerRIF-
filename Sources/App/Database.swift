@@ -1,41 +1,107 @@
+////////////////////////////////////////////////////
+//////////////////// KARI IHAB ////////////////////
+//////////////////////////////////////////////////
+//////////////////// BD cars ////////////////////
+//////////////////////////////////////////////////
+
+
 import SQLite
 import Foundation
 
-// Connection uses an internal serial queue, so it is safe to mark Sendable.
-extension Connection: @unchecked @retroactive Sendable {}
+//Creati
+let db         = try Connection("cars.sqlite3")
+let carsTable  = Table("cars")
 
-struct Database {
-    // Definitions for the Table
-    static let tasks = Table("tasks")
-    static let id = Expression<Int64>("id")
-    static let title = Expression<String>("title")
-    static let isCompleted = Expression<Bool>("is_completed")
+let colId         = Expression<Int64>("id")
+let colMake       = Expression<String>("make")
+let colModel      = Expression<String>("model")
+let colYear       = Expression<Int>("year")
+let colColor      = Expression<String>("color")
+let colMileage    = Expression<Int>("mileage")
+let colIsFavorite = Expression<Bool>("isFavorite")
 
-    static func setup() throws -> Connection {
-        let db = try Connection("db.sqlite3")
-        try db.run(tasks.create(ifNotExists: true) { t in
-            t.column(id, primaryKey: .autoincrement)
-            t.column(title)
-            t.column(isCompleted, defaultValue: false)
-        })
-        return db
-    }
+// MARK: - Création de la table
+func createTable() throws {
+    try db.run(carsTable.create(ifNotExists: true) { t in
+        t.column(colId, primaryKey: .autoincrement)
+        t.column(colMake)
+        t.column(colModel)
+        t.column(colYear)
+        t.column(colColor)
+        t.column(colMileage)
+        t.column(colIsFavorite, defaultValue: false)
+    })
+}
 
-    static func fetchAllTasks(db: Connection) throws -> [TaskItem] {
-        return try db.prepare(tasks).map { row in
-            TaskItem(id: row[id], title: row[title], isCompleted: row[isCompleted])
-        }
-    }
+// MARK: - CREATE
+func createCar(_ car: Car) throws {
+    try db.run(carsTable.insert(
+        colMake       <- car.make,
+        colModel      <- car.model,
+        colYear       <- car.year,
+        colColor      <- car.color,
+        colMileage    <- car.mileage,
+        colIsFavorite <- car.isFavorite
+    ))
+}
 
-    static func addTask(db: Connection, title text: String) throws {
-        try db.run(tasks.insert(title <- text))
+// MARK: - READ ALL
+func getAllCars() throws -> [Car] {
+    var cars: [Car] = []
+    for row in try db.prepare(carsTable) {
+        cars.append(Car(
+            id:         row[colId],
+            make:       row[colMake],
+            model:      row[colModel],
+            year:       row[colYear],
+            color:      row[colColor],
+            mileage:    row[colMileage],
+            isFavorite: row[colIsFavorite]
+        ))
     }
-    
-    static func toggleTask(db: Connection, id targetId: Int64) throws {
-        let task = tasks.filter(id == targetId)
-        // Find current state to flip it
-        if let current = try db.pluck(task) {
-            try db.run(task.update(isCompleted <- !current[isCompleted]))
-        }
-    }
+    return cars
+}
+
+// MARK: - READ ONE
+func getCarById(_ id: Int64) throws -> Car? {
+    let query = carsTable.filter(colId == id)
+    guard let row = try db.pluck(query) else { return nil }
+    return Car(
+        id:         row[colId],
+        make:       row[colMake],
+        model:      row[colModel],
+        year:       row[colYear],
+        color:      row[colColor],
+        mileage:    row[colMileage],
+        isFavorite: row[colIsFavorite]
+    )
+}
+
+// MARK: - UPDATE
+func updateCar(_ car: Car) throws {
+    guard let id = car.id else { return }
+    let target = carsTable.filter(colId == id)
+    try db.run(target.update(
+        colMake       <- car.make,
+        colModel      <- car.model,
+        colYear       <- car.year,
+        colColor      <- car.color,
+        colMileage    <- car.mileage,
+        colIsFavorite <- car.isFavorite
+    ))
+}
+
+// MARK: - DELETE
+func deleteCar(_ id: Int64) throws {
+    let target = carsTable.filter(colId == id)
+    try db.run(target.delete())
+}
+
+// MARK: - TOGGLE FAVORITE
+func toggleFavorite(_ id: Int64) throws {
+    guard let car = try getCarById(id) else { return }
+    let target = carsTable.filter(colId == id)
+    try db.run(target.update(
+        colIsFavorite <- !car.isFavorite
+    ))
 }
