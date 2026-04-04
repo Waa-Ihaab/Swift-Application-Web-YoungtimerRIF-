@@ -1,6 +1,6 @@
 // Views.swift
-// YoungtimerGarage — Projet Final iOS Swift
-// Université Paris 8 — 2026
+// YoungtimerGarage - Projet Final iOS Swift
+// Université Paris 8 - 2026
 
 import Foundation
 
@@ -12,22 +12,23 @@ import Foundation
 ///   - content: HTML injecté dans le <main>.
 ///   - error:   Message d'erreur optionnel affiché en bandeau rouge.
 func basePage(title: String, content: String, error: String? = nil) -> String {
-    let errorBanner = error.map { msg in
-        """
-        <div class="error-banner">
-          <span>⚠ \(msg)</span>
-          <a href="/">← Retour</a>
-        </div>
-        """
+  let errorBanner =
+    error.map { msg in
+      """
+      <div class="error-banner">
+        <span>⚠ \(msg)</span>
+        <a href="/">← Retour</a>
+      </div>
+      """
     } ?? ""
 
-    return """
+  return """
     <!DOCTYPE html>
     <html lang="fr">
     <head>
       <meta charset="UTF-8"/>
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <title>\(title) — YoungtimerGarage</title>
+      <title>\(title) - YoungtimerRIF</title>
       <link rel="preconnect" href="https://fonts.googleapis.com"/>
       <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet"/>
       <style>
@@ -288,10 +289,12 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
         }
         .car-title {
           font-family: var(--font-h);
-          font-size: 22px;
-          font-weight: 700;
-          line-height: 1.1;
-          margin-bottom: 2px;
+          font-size: 34px;
+          font-weight: 900;
+          line-height: 1;
+          margin-bottom: 6px;
+          text-transform: uppercase;
+          letter-spacing: -0.5px;
         }
         .car-model {
           font-size: 13px;
@@ -558,12 +561,13 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
           border-top: 1px solid var(--border);
           padding: 28px 40px;
           display: flex;
-          justify-content: space-between;
+          justify-content: center;
           align-items: center;
           color: var(--gray);
           font-size: 12px;
           letter-spacing: 0.5px;
           margin-top: 60px;
+          text-align: center;
         }
         footer strong { color: var(--red); }
 
@@ -578,7 +582,7 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
     </head>
     <body>
       <nav>
-        <a class="logo" href="/">Youngtimer<span>Garage</span></a>
+        <a class="logo" href="/">Youngtimer<span>RIF</span></a>
         <ul>
           <li><a href="/">Catalogue</a></li>
           <li><a href="/add" class="btn-add">+ Ajouter</a></li>
@@ -589,8 +593,7 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
         \(content)
       </main>
       <footer>
-        <span>© 2026 <strong>YoungtimerGarage</strong> — Université Paris 8</span>
-        <span>Swift · Hummingbird 2 · SQLite</span>
+        <span>© 2026 <strong>Kari Ihab</strong> - Université Paris 8</span>
       </footer>
     </body>
     </html>
@@ -601,44 +604,44 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
 
 /// SVG décoratif utilisé comme placeholder dans les cards et la page détail.
 let carIconSVG = """
-<svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg" fill="white">
-  <path d="M30 55 L50 30 Q55 24 65 24 L135 24 Q145 24 150 30 L170 55 L180 55
-           Q185 55 185 60 L185 65 Q185 68 182 68 L170 68
-           Q170 75 163 75 Q156 75 156 68 L44 68
-           Q44 75 37 75 Q30 75 30 68 L18 68
-           Q15 68 15 65 L15 60 Q15 55 20 55 Z"/>
-  <circle cx="44" cy="68" r="10" fill="#0a0a0a"/>
-  <circle cx="44" cy="68" r="6"  fill="white" opacity=".15"/>
-  <circle cx="163" cy="68" r="10" fill="#0a0a0a"/>
-  <circle cx="163" cy="68" r="6"  fill="white" opacity=".15"/>
-  <path d="M68 27 L80 43 L120 43 L132 27 Z" fill="#0a0a0a" opacity=".3"/>
-</svg>
-"""
+  <svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg" fill="white">
+    <path d="M30 55 L50 30 Q55 24 65 24 L135 24 Q145 24 150 30 L170 55 L180 55
+             Q185 55 185 60 L185 65 Q185 68 182 68 L170 68
+             Q170 75 163 75 Q156 75 156 68 L44 68
+             Q44 75 37 75 Q30 75 30 68 L18 68
+             Q15 68 15 65 L15 60 Q15 55 20 55 Z"/>
+    <circle cx="44" cy="68" r="10" fill="#0a0a0a"/>
+    <circle cx="44" cy="68" r="6"  fill="white" opacity=".15"/>
+    <circle cx="163" cy="68" r="10" fill="#0a0a0a"/>
+    <circle cx="163" cy="68" r="6"  fill="white" opacity=".15"/>
+    <path d="M68 27 L80 43 L120 43 L132 27 Z" fill="#0a0a0a" opacity=".3"/>
+  </svg>
+  """
 
 // MARK: - Condition Badge Helper
 
 /// Retourne la classe CSS correspondant à l'état de la voiture.
 func conditionClass(_ condition: String) -> String {
-    switch condition {
-    case "Excellent": return "badge-excellent"
-    case "Bon":       return "badge-bon"
-    default:          return "badge-restaurer"
-    }
+  switch condition {
+  case "Excellent": return "badge-excellent"
+  case "Bon": return "badge-bon"
+  default: return "badge-restaurer"
+  }
 }
 
 // MARK: - INDEX Page (liste + recherche + tri)
 
 /// Page principale : catalogue de toutes les voitures.
 func indexPage(cars: [Car], searchQuery: String = "", sortBy: String = "") -> String {
-    let header = """
+  let header = """
     <div class="page-header">
       <h1>Acheter des Youngtimers</h1>
       <p>Voitures des années 1970–2010 · Collection &amp; Usage</p>
     </div>
     """
 
-    // Barre de recherche
-    let searchBar = """
+  // Barre de recherche
+  let searchBar = """
     <form class="search-bar" method="get" action="/search">
       <input type="text" name="q" placeholder="Marque, modèle, couleur…"
              value="\(searchQuery)"/>
@@ -646,13 +649,13 @@ func indexPage(cars: [Car], searchQuery: String = "", sortBy: String = "") -> St
     </form>
     """
 
-    // Tri
-    let sorts = [("brand","Marque"), ("year","Année"), ("price","Prix"), ("mileage","Km")]
-    let sortLinks = sorts.map { (key, label) in
-        let active = sortBy == key ? "active" : ""
-        return "<a href=\"/?sort=\(key)\" class=\"sort-btn \(active)\">\(label)</a>"
-    }.joined()
-    let sortBar = """
+  // Tri
+  let sorts = [("brand", "Marque"), ("year", "Année"), ("price", "Prix"), ("mileage", "Km")]
+  let sortLinks = sorts.map { (key, label) in
+    let active = sortBy == key ? "active" : ""
+    return "<a href=\"/?sort=\(key)\" class=\"sort-btn \(active)\">\(label)</a>"
+  }.joined()
+  let sortBar = """
     <div class="sort-bar">
       <span>Trier par :</span>
       \(sortLinks)
@@ -660,53 +663,54 @@ func indexPage(cars: [Car], searchQuery: String = "", sortBy: String = "") -> St
     </div>
     """
 
-    // Compteur
-    let count = """
+  // Compteur
+  let count = """
     <p class="results-count">
       <span>\(cars.count)</span> annonce\(cars.count > 1 ? "s" : "")
       \(searchQuery.isEmpty ? "" : "pour « \(searchQuery) »")
     </p>
     """
 
-    // Grille de cards
-    let grid: String
-    if cars.isEmpty {
-        grid = """
-        <div class="empty-state">
-          <h2>Aucun résultat</h2>
-          <p>Essayez une autre recherche ou <a href="/add" style="color:var(--red)">ajoutez une voiture</a>.</p>
-        </div>
-        """
-    } else {
-        let cards = cars.map { carCard($0) }.joined(separator: "\n")
-        grid = "<div class=\"cars-grid\">\n\(cards)\n</div>"
-    }
+  // Grille de cards
+  let grid: String
+  if cars.isEmpty {
+    grid = """
+      <div class="empty-state">
+        <h2>Aucun résultat</h2>
+        <p>Essayez une autre recherche ou <a href="/add" style="color:var(--red)">ajoutez une voiture</a>.</p>
+      </div>
+      """
+  } else {
+    let cards = cars.map { carCard($0) }.joined(separator: "\n")
+    grid = "<div class=\"cars-grid\">\n\(cards)\n</div>"
+  }
 
-    return basePage(
-        title: "Catalogue",
-        content: header + searchBar + sortBar + count + grid
-    )
+  return basePage(
+    title: "Catalogue",
+    content: header + searchBar + sortBar + count + grid
+  )
 }
 
 // MARK: - Car Card Component
 
 /// Génère le HTML d'une card voiture pour la grille.
 func carCard(_ car: Car) -> String {
-    let id = car.id ?? 0
-    let condClass = conditionClass(car.condition)
-    let condLabel = car.condition == "À restaurer" ? "À restaurer" : car.condition
+  let id = car.id ?? 0
+  let condClass = conditionClass(car.condition)
+  let condLabel = car.condition == "À restaurer" ? "À restaurer" : car.condition
 
-    return """
+  return """
     <div class="car-card">
-      <div class="car-card-img">
-        \(carIconSVG)
-        <span class="car-year-badge">\(car.year)</span>
-        <span class="car-condition-badge \(condClass)">\(condLabel)</span>
-      </div>
       <div class="car-card-body">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:10px;">
+          <span class="car-year-badge" style="position:static;">\(car.year)</span>
+          <span class="car-condition-badge \(condClass)" style="position:static;">\(condLabel)</span>
+        </div>
+
         <p class="car-ref">Réf. #\(String(format: "%06d", id))</p>
         <h2 class="car-title">\(car.brand)</h2>
         <p class="car-model">\(car.model) · \(car.color)</p>
+
         <div class="car-specs">
           <div class="spec-item">
             <span class="spec-label">Kilométrage</span>
@@ -725,10 +729,12 @@ func carCard(_ car: Car) -> String {
             <span class="spec-value">\(car.condition)</span>
           </div>
         </div>
+
         <div class="car-price">
           \(car.formattedPrice)
           <small>TVA non récupérable</small>
         </div>
+
         <div class="card-actions">
           <a href="/cars/\(id)" class="btn-detail">Détails</a>
           <a href="/edit/\(id)" class="btn-offer">Modifier →</a>
@@ -737,15 +743,14 @@ func carCard(_ car: Car) -> String {
     </div>
     """
 }
-
 // MARK: - DETAIL Page
 
 /// Page de détail d'une voiture (bonus +5 pts).
 func detailPage(car: Car) -> String {
-    let id = car.id ?? 0
-    let condClass = conditionClass(car.condition)
+  let id = car.id ?? 0
+  let condClass = conditionClass(car.condition)
 
-    let content = """
+  let content = """
     <a href="/" class="detail-back">← Retour au catalogue</a>
     <div class="detail-layout">
       <div class="detail-img">
@@ -788,7 +793,7 @@ func detailPage(car: Car) -> String {
     </div>
     """
 
-    return basePage(title: "\(car.brand) \(car.model)", content: content)
+  return basePage(title: "\(car.brand) \(car.model)", content: content)
 }
 
 // MARK: - ADD / EDIT Form
@@ -796,22 +801,22 @@ func detailPage(car: Car) -> String {
 /// Formulaire d'ajout ou de modification d'une voiture.
 /// Si `car` est fourni → mode édition. Sinon → mode création.
 func formPage(car: Car? = nil, error: String? = nil) -> String {
-    let isEdit  = car != nil
-    let id      = car?.id ?? 0
-    let action  = isEdit ? "/update/\(id)" : "/create"
-    let pageTitle = isEdit ? "Modifier l'annonce" : "Ajouter une voiture"
+  let isEdit = car != nil
+  let id = car?.id ?? 0
+  let action = isEdit ? "/update/\(id)" : "/create"
+  let pageTitle = isEdit ? "Modifier l'annonce" : "Ajouter une voiture"
 
-    func val(_ v: String) -> String { v }
-    func sel(_ current: String, _ option: String) -> String {
-        current == option ? "selected" : ""
-    }
+  func val(_ v: String) -> String { v }
+  func sel(_ current: String, _ option: String) -> String {
+    current == option ? "selected" : ""
+  }
 
-    let conditions = ["Excellent", "Bon", "À restaurer"]
-    let conditionOptions = conditions.map { c in
-        "<option value=\"\(c)\" \(sel(car?.condition ?? "", c))>\(c)</option>"
-    }.joined()
+  let conditions = ["Excellent", "Bon", "À restaurer"]
+  let conditionOptions = conditions.map { c in
+    "<option value=\"\(c)\" \(sel(car?.condition ?? "", c))>\(c)</option>"
+  }.joined()
 
-    let content = """
+  let content = """
     <div class="page-header">
       <h1>\(pageTitle)</h1>
       <p>\(isEdit ? "Modifiez les informations de cette annonce." : "Renseignez les informations de la voiture à ajouter au catalogue.")</p>
@@ -857,7 +862,7 @@ func formPage(car: Car? = nil, error: String? = nil) -> String {
         <div class="form-group full">
           <label for="condition">État *</label>
           <select id="condition" name="condition" required>
-            <option value="">— Sélectionner —</option>
+            <option value="">- Sélectionner -</option>
             \(conditionOptions)
           </select>
         </div>
@@ -873,40 +878,40 @@ func formPage(car: Car? = nil, error: String? = nil) -> String {
     </form>
     """
 
-    return basePage(title: pageTitle, content: content, error: error)
+  return basePage(title: pageTitle, content: content, error: error)
 }
 
 // MARK: - SEARCH Results Page
 
 /// Page de résultats de recherche (bonus +5 pts).
 func searchPage(cars: [Car], query: String) -> String {
-    let header = """
+  let header = """
     <div class="page-header">
       <h1>Résultats de recherche</h1>
       <p>Résultats pour : <strong style="color:var(--white)">\(query)</strong></p>
     </div>
     """
-    return basePage(
-        title: "Recherche : \(query)",
-        content: header + indexBody(cars: cars, searchQuery: query, sortBy: "")
-    )
+  return basePage(
+    title: "Recherche : \(query)",
+    content: header + indexBody(cars: cars, searchQuery: query, sortBy: "")
+  )
 }
 
 /// Corps commun entre index et résultats de recherche.
 private func indexBody(cars: [Car], searchQuery: String, sortBy: String) -> String {
-    let count = """
+  let count = """
     <p class="results-count">
       <span>\(cars.count)</span> voiture\(cars.count > 1 ? "s" : "") trouvée\(cars.count > 1 ? "s" : "")
     </p>
     """
-    if cars.isEmpty {
-        return count + """
-        <div class="empty-state">
-          <h2>Aucun résultat</h2>
-          <p>Essayez une autre recherche ou <a href="/add" style="color:var(--red)">ajoutez une voiture</a>.</p>
-        </div>
-        """
-    }
-    let cards = cars.map { carCard($0) }.joined(separator: "\n")
-    return count + "<div class=\"cars-grid\">\n\(cards)\n</div>"
+  if cars.isEmpty {
+    return count + """
+      <div class="empty-state">
+        <h2>Aucun résultat</h2>
+        <p>Essayez une autre recherche ou <a href="/add" style="color:var(--red)">ajoutez une voiture</a>.</p>
+      </div>
+      """
+  }
+  let cards = cars.map { carCard($0) }.joined(separator: "\n")
+  return count + "<div class=\"cars-grid\">\n\(cards)\n</div>"
 }

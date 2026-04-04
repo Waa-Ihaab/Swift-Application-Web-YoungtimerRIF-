@@ -6,11 +6,9 @@ import Foundation
 @preconcurrency import SQLite 
 
 
-// MARK: - Table & Column Definitions
-
 /// Référence à la table SQLite "cars".
 let carsTable = Table("cars")
-
+ 
 /// Colonnes typées — SQLite.swift (aucune chaîne SQL brute).
 let colId        = Expression<Int>("id")
 let colBrand     = Expression<String>("brand")
