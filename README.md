@@ -1,11 +1,11 @@
 <h1 align="center">YoungtimerRIF</h1>
-<p align="center"><b>YoungtimerRIF</b> — Votre catalogue de voitures de collection</p>
+<p align="center"><b>YoungtimerRIF</b> - Votre catalogue de voitures de collection</p>
 
 ---
 
 ## Description
 
-**YoungtimerRIF** est une application web CRUD développée entièrement en Swift, permettant de consulter, ajouter, modifier et supprimer des annonces de voitures youngtimers — des véhicules de collection des années **1970 à 2010**.
+**YoungtimerRIF** est une application web CRUD développée entièrement en Swift, permettant de consulter, ajouter, modifier et supprimer des annonces de voitures youngtimers - des véhicules de collection des années **1970 à 2010**.
 
 Chaque annonce affiche la marque, le modèle, l'année, le kilométrage, le prix et l'état du véhicule. L'application propose également une **recherche** par marque, modèle ou couleur, ainsi qu'un **tri** par différents critères.
 
@@ -14,7 +14,7 @@ Chaque annonce affiche la marque, le modèle, l'année, le kilométrage, le prix
 ## Technologies
 
 - **Swift 6.2**
-- **Hummingbird 2** — Framework web Swift
+- **Hummingbird 2** - Framework web Swift
 - **SQLite** via SQLite.swift
 - **GitHub Codespaces**
 
@@ -24,7 +24,7 @@ Chaque annonce affiche la marque, le modèle, l'année, le kilométrage, le prix
 
 | Méthode | Route | Description |
 |---------|-------|-------------|
-| `GET` | `/` | Liste toutes les voitures — tri optionnel via `?sort=` |
+| `GET` | `/` | Liste toutes les voitures - tri optionnel via `?sort=` |
 | `GET` | `/search` | Recherche par marque, modèle ou couleur via `?q=` |
 | `GET` | `/cars/:id` | Page de détail d'une voiture |
 | `GET` | `/add` | Formulaire d'ajout d'une voiture |
@@ -49,7 +49,7 @@ Dans GitHub Codespaces, ouvrez l'onglet **Ports** pour accéder à l'URL publiqu
 
 ### 2. Naviguer dans le catalogue
 
-- **Accueil** → `/` — voir toutes les annonces disponibles
+- **Accueil** → `/` - voir toutes les annonces disponibles
 - **Recherche** → barre de recherche en haut de page (`?q=mercedes`)
 - **Tri** → boutons Marque / Année / Prix / Km (`?sort=brand`, `?sort=year`, `?sort=price`, `?sort=mileage`)
 
@@ -68,4 +68,4 @@ Des données d'exemple sont insérées automatiquement si la base est vide.
 
 ## Auteur
 
-**Kari Ihab** — Université Paris 8, 2026
+**Kari Ihab** - Université Paris 8, 2026
