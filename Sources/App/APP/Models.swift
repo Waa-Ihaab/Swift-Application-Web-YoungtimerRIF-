@@ -1,56 +1,52 @@
 // Models.swift
-// YoungtimerGarage — Projet Final iOS Swift
-// Université Paris 8 — 2026
+// Kari Ihab
 
 import Foundation
 
-// MARK: - Car Model
+// MARK: - Modèle Car
 
-/// Représente une voiture youngtimer dans la base de données.
-/// Conforme à Codable (sérialisation JSON) et Sendable (concurrence Swift).
+/// Modèle d'une voiture
 struct Car: Codable, Sendable {
 
-    /// Identifiant unique auto-incrémenté par SQLite.
+    /// Id de la voiture
     let id: Int?
 
-    /// Marque de la voiture (ex: Mercedes-Benz, BMW, Peugeot).
+    /// Marque
     let brand: String
 
-    /// Modèle exact (ex: W124 200E, E30 325i, 205 GTI).
+    /// Modèle
     let model: String
 
-    /// Année de fabrication (ex: 1989).
+    /// Année
     let year: Int
 
-    /// Kilométrage en km (ex: 145000).
+    /// Kilométrage
     let mileage: Int
 
-    /// Prix en euros (ex: 8500.0).
+    /// Prix
     let price: Double
 
-    /// Couleur de la carrosserie (ex: Noir, Gris Métallisé, Rouge).
+    /// Couleur
     let color: String
 
-    /// État général de la voiture.
-    /// Valeurs acceptées : "Excellent", "Bon", "À restaurer"
+    /// État
     let condition: String
 }
 
-// MARK: - Car Extension
+// MARK: - Extensions Car
 
 extension Car {
 
-    /// Retourne une description lisible de l'état de la voiture
-    /// avec un indicateur visuel (emoji) côté serveur HTML.
+    /// Retourne l'état
     var conditionBadge: String {
         switch condition {
-        case "Excellent": return "🟢 Excellent"
-        case "Bon":       return "🟡 Bon"
-        default:          return "🔴 À restaurer"
+        case "Excellent": return "Excellent"
+        case "Bon":       return "Bon"
+        default:          return "À restaurer"
         }
     }
 
-    /// Formate le kilométrage avec séparateur de milliers.
+    /// Formater le kilométrage
     var formattedMileage: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -58,7 +54,7 @@ extension Car {
         return (formatter.string(from: NSNumber(value: mileage)) ?? "\(mileage)") + " km"
     }
 
-    /// Formate le prix en euros.
+    /// Formater le prix
     var formattedPrice: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
@@ -69,16 +65,15 @@ extension Car {
     }
 }
 
-// MARK: - Form Input Model
+// MARK: - Données du formulaire
 
-/// Données reçues depuis le formulaire HTML (POST).
-/// Tous les champs sont optionnels car ils viennent d'un formulaire web.
+/// Données récupérées depuis le formulaire HTML
 struct CarFormInput: Codable, Sendable {
     let brand: String?
     let model: String?
-    let year: String?      // String → converti en Int côté Database
-    let mileage: String?   // String → converti en Int côté Database
-    let price: String?     // String → converti en Double côté Database
+    let year: String?
+    let mileage: String?
+    let price: String?
     let color: String?
     let condition: String?
 }
@@ -87,10 +82,7 @@ struct CarFormInput: Codable, Sendable {
 
 extension CarFormInput {
 
-    /// Valide les données du formulaire et retourne une `Car` prête à insérer,
-    /// ou lance une erreur descriptive si un champ est invalide.
-    ///
-    /// - Throws: `ValidationError` si un champ est manquant ou invalide.
+    /// Vérifier les données du formulaire
     func validated() throws -> Car {
         guard let brand = brand, !brand.trimmingCharacters(in: .whitespaces).isEmpty else {
             throw ValidationError.missingField("marque")
@@ -131,7 +123,7 @@ extension CarFormInput {
     }
 }
 
-// MARK: - Validation Error
+// MARK: - Erreurs de validation
 
 enum ValidationError: Error, CustomStringConvertible {
     case missingField(String)

@@ -1,25 +1,13 @@
 // main.swift
-// YoungtimerGarage — Projet Final iOS Swift
-// Université Paris 8 — 2026
+// Kari Ihab
 
 import Hummingbird
 import NIOCore
 import Foundation
 
-// MARK: - Application Setup
+// MARK: - Lancement de l'application
 
-/// Configure et lance le serveur Hummingbird 2.
-///
-/// Architecture :
-///   GET  /                → liste toutes les voitures (+ tri optionnel via ?sort=)
-///   GET  /search          → recherche par marque/modèle/couleur (?q=)
-///   GET  /cars/:id        → page de détail d'une voiture [BONUS]
-///   GET  /add             → formulaire d'ajout
-///   GET  /edit/:id        → formulaire de modification pré-rempli
-///   POST /create          → insère une nouvelle voiture
-///   POST /update/:id      → met à jour une voiture existante
-///   POST /delete/:id      → supprime une voiture
-
+/// Configuration et lancement du serveur
 let app = Application(
     router: buildRouter(),
     configuration: .init(address: .hostname("0.0.0.0", port: 8080))
@@ -29,12 +17,12 @@ try await app.runService()
 
 // MARK: - Router
 
-/// Construit et retourne le routeur avec toutes les routes enregistrées.
+/// Création du routeur et des routes
 func buildRouter() -> Router<BasicRequestContext> {
     let router = Router(context: BasicRequestContext.self)
 
-    // ── GET / ──────────────────────────────────────────────────────────────
-    // Liste toutes les voitures. Paramètre optionnel : ?sort=brand|year|price|mileage
+    // GET /
+    // Afficher toutes les voitures avec tri optionnel
     router.get("/") { request, context -> Response in
         let sortBy = request.uri.queryParameters.get("sort") ?? ""
         do {
@@ -47,8 +35,8 @@ func buildRouter() -> Router<BasicRequestContext> {
         }
     }
 
-    // ── GET /search ────────────────────────────────────────────────────────
-    // Recherche par marque, modèle ou couleur. Paramètre : ?q=
+    // GET /search
+    // Recherche par marque, modèle ou couleur
     router.get("/search") { request, context -> Response in
         let query = request.uri.queryParameters.get("q") ?? ""
         guard !query.trimmingCharacters(in: .whitespaces).isEmpty else {
@@ -64,8 +52,8 @@ func buildRouter() -> Router<BasicRequestContext> {
         }
     }
 
-    // ── GET /cars/:id ──────────────────────────────────────────────────────
-    // Page de détail d'une voiture. [BONUS +5 pts]
+    // GET /cars/:id
+    // Afficher les détails d'une voiture
     router.get("/cars/:id") { request, context -> Response in
         guard let id = context.parameters.get("id", as: Int.self) else {
             return redirect(to: "/")
@@ -81,15 +69,15 @@ func buildRouter() -> Router<BasicRequestContext> {
         }
     }
 
-    // ── GET /add ───────────────────────────────────────────────────────────
-    // Affiche le formulaire d'ajout vide.
+    // GET /add
+    // Afficher le formulaire d'ajout
     router.get("/add") { request, context -> Response in
         let html = formPage()
         return htmlResponse(html)
     }
 
-    // ── GET /edit/:id ──────────────────────────────────────────────────────
-    // Affiche le formulaire pré-rempli pour modifier une voiture.
+    // GET /edit/:id
+    // Afficher le formulaire de modification
     router.get("/edit/:id") { request, context -> Response in
         guard let id = context.parameters.get("id", as: Int.self) else {
             return redirect(to: "/")
@@ -105,8 +93,8 @@ func buildRouter() -> Router<BasicRequestContext> {
         }
     }
 
-    // ── POST /create ───────────────────────────────────────────────────────
-    // Reçoit le formulaire d'ajout, valide les données, insère en base.
+    // POST /create
+    // Ajouter une nouvelle voiture
     router.post("/create") { request, context -> Response in
         do {
             var body = try await request.body.collect(upTo: 1024 * 16)
@@ -124,8 +112,8 @@ func buildRouter() -> Router<BasicRequestContext> {
         }
     }
 
-    // ── POST /update/:id ───────────────────────────────────────────────────
-    // Reçoit le formulaire de modification, valide, met à jour en base.
+    // POST /update/:id
+    // Modifier une voiture existante
     router.post("/update/:id") { request, context -> Response in
         guard let id = context.parameters.get("id", as: Int.self) else {
             return redirect(to: "/")
@@ -148,8 +136,8 @@ func buildRouter() -> Router<BasicRequestContext> {
         }
     }
 
-    // ── POST /delete/:id ───────────────────────────────────────────────────
-    // Supprime une voiture et redirige vers la liste.
+    // POST /delete/:id
+    // Supprimer une voiture
     router.post("/delete/:id") { request, context -> Response in
         guard let id = context.parameters.get("id", as: Int.self) else {
             return redirect(to: "/")
@@ -157,7 +145,7 @@ func buildRouter() -> Router<BasicRequestContext> {
         do {
             try DatabaseManager.shared.deleteCar(id: id)
         } catch {
-            // Si la voiture n'existe pas, on redirige quand même proprement.
+            // Si erreur, retour à l'accueil quand même
         }
         return redirect(to: "/")
     }
@@ -167,11 +155,7 @@ func buildRouter() -> Router<BasicRequestContext> {
 
 // MARK: - Form Parser
 
-/// Parse un body URL-encoded (ex: "brand=BMW&model=E30&year=1988")
-/// et retourne un `CarFormInput` avec les valeurs décodées.
-///
-/// Les caractères spéciaux sont décodés via `removingPercentEncoding`.
-/// Les `+` sont remplacés par des espaces (standard HTML form encoding).
+/// Lire les données du formulaire et les transformer en CarFormInput
 func parseForm(_ raw: String) -> CarFormInput {
     var fields: [String: String] = [:]
     for pair in raw.split(separator: "&") {
@@ -195,9 +179,9 @@ func parseForm(_ raw: String) -> CarFormInput {
     )
 }
 
-// MARK: - Response Helpers
+// MARK: - Réponses HTTP
 
-/// Construit une réponse HTTP 200 avec du contenu HTML.
+/// Retourner une page HTML
 func htmlResponse(_ html: String) -> Response {
     var headers = HTTPFields()
     headers[.contentType] = "text/html; charset=utf-8"
@@ -208,7 +192,7 @@ func htmlResponse(_ html: String) -> Response {
     )
 }
 
-/// Construit une réponse HTTP 303 (redirect après POST).
+/// Faire une redirection
 func redirect(to path: String) -> Response {
     var headers = HTTPFields()
     headers[.location] = path

@@ -1,15 +1,14 @@
 // Database.swift
-// YoungtimerGarage — Projet Final iOS Swift
-// Université Paris 8 — 2026
+// Kari Ihab
 
 import Foundation
 @preconcurrency import SQLite 
 
 
-/// Référence à la table SQLite "cars".
+/// Table SQLite cars
 let carsTable = Table("cars")
  
-/// Colonnes typées — SQLite.swift (aucune chaîne SQL brute).
+/// Colonnes
 let colId        = Expression<Int>("id")
 let colBrand     = Expression<String>("brand")
 let colModel     = Expression<String>("model")
@@ -19,32 +18,26 @@ let colPrice     = Expression<Double>("price")
 let colColor     = Expression<String>("color")
 let colCondition = Expression<String>("condition")
 
-// MARK: - Database Manager
-
-/// Gère la connexion SQLite et toutes les opérations CRUD.
+/// Gestion de la base de données
 final class DatabaseManager: Sendable {
 
-    /// Connexion partagée (singleton) utilisée dans toute l'application.
+    /// Instance partagée
     static let shared = DatabaseManager()
 
     private let db: Connection
 
-    // MARK: Init
-
     private init() {
         do {
-            // Fichier de base de données dans le répertoire courant.
+            // Création / ouverture du fichier SQLite
             db = try Connection("youngtimer_garage.sqlite3")
             try createTable()
             try seedIfEmpty()
         } catch {
-            fatalError("Impossible d'initialiser la base de données : \(error)")
+            fatalError("Erreur init DB : \(error)")
         }
     }
 
-    // MARK: - Table Creation
-
-    /// Crée la table "cars" si elle n'existe pas encore.
+    /// Création de la table si elle n'existe pas
     private func createTable() throws {
         try db.run(carsTable.create(ifNotExists: true) { t in
             t.column(colId,        primaryKey: .autoincrement)
@@ -58,9 +51,7 @@ final class DatabaseManager: Sendable {
         })
     }
 
-    // MARK: - Seed Data
-
-    /// Insère des données d'exemple si la table est vide.
+    /// Ajout de données de test si la table est vide
     private func seedIfEmpty() throws {
         let count = try db.scalar(carsTable.count)
         guard count == 0 else { return }
@@ -86,13 +77,7 @@ final class DatabaseManager: Sendable {
         }
     }
 
-    // MARK: - READ (All)
-
-    /// Retourne toutes les voitures, avec tri optionnel.
-    ///
-    /// - Parameter sortBy: Colonne de tri ("year", "price", "mileage", "brand"). Nil = ordre d'insertion.
-    /// - Returns: Tableau de `Car` trié.
-    /// - Throws: Erreur SQLite en cas d'échec de lecture.
+    /// Récupérer toutes les voitures (tri optionnel)
     func getAllCars(sortBy: String? = nil) throws -> [Car] {
         var query = carsTable
 
@@ -118,13 +103,7 @@ final class DatabaseManager: Sendable {
         }
     }
 
-    // MARK: - READ (One)
-
-    /// Retourne une voiture par son identifiant.
-    ///
-    /// - Parameter id: Identifiant SQLite de la voiture.
-    /// - Returns: `Car` si trouvée, `nil` sinon.
-    /// - Throws: Erreur SQLite en cas d'échec de lecture.
+    /// Récupérer une voiture par id
     func getCar(id: Int) throws -> Car? {
         let query = carsTable.filter(colId == id)
         return try db.prepare(query).compactMap { row in
@@ -141,13 +120,7 @@ final class DatabaseManager: Sendable {
         }.first
     }
 
-    // MARK: - SEARCH
-
-    /// Recherche des voitures par marque ou modèle (clause WHERE LIKE).
-    ///
-    /// - Parameter query: Texte de recherche.
-    /// - Returns: Tableau de `Car` correspondantes.
-    /// - Throws: Erreur SQLite en cas d'échec de lecture.
+    /// Recherche (marque / modèle / couleur)
     func searchCars(query: String) throws -> [Car] {
         let term = "%\(query)%"
         let filtered = carsTable.filter(
@@ -168,12 +141,7 @@ final class DatabaseManager: Sendable {
         }
     }
 
-    // MARK: - CREATE
-
-    /// Insère une nouvelle voiture dans la base de données.
-    ///
-    /// - Parameter car: `Car` à insérer (id doit être nil).
-    /// - Throws: Erreur SQLite en cas d'échec d'insertion.
+    /// Ajouter une voiture
     func createCar(_ car: Car) throws {
         try db.run(carsTable.insert(
             colBrand     <- car.brand,
@@ -186,14 +154,7 @@ final class DatabaseManager: Sendable {
         ))
     }
 
-    // MARK: - UPDATE
-
-    /// Met à jour une voiture existante identifiée par son id.
-    ///
-    /// - Parameters:
-    ///   - id:  Identifiant de la voiture à modifier.
-    ///   - car: Nouvelles données (id ignoré).
-    /// - Throws: Erreur SQLite, ou `DatabaseError.notFound` si l'id n'existe pas.
+    /// Modifier une voiture existante
     func updateCar(id: Int, with car: Car) throws {
         let target = carsTable.filter(colId == id)
         let updated = try db.run(target.update(
@@ -210,12 +171,7 @@ final class DatabaseManager: Sendable {
         }
     }
 
-    // MARK: - DELETE
-
-    /// Supprime une voiture par son identifiant.
-    ///
-    /// - Parameter id: Identifiant de la voiture à supprimer.
-    /// - Throws: Erreur SQLite, ou `DatabaseError.notFound` si l'id n'existe pas.
+    /// Supprimer une voiture
     func deleteCar(id: Int) throws {
         let target = carsTable.filter(colId == id)
         let deleted = try db.run(target.delete())
@@ -225,15 +181,14 @@ final class DatabaseManager: Sendable {
     }
 }
 
-// MARK: - Database Error
-
+/// Erreurs liées à la base
 enum DatabaseError: Error, CustomStringConvertible {
     case notFound(Int)
 
     var description: String {
         switch self {
         case .notFound(let id):
-            return "Aucune voiture trouvée avec l'identifiant \(id)."
+            return "Voiture non trouvée avec id \(id)"
         }
     }
 }

@@ -1,16 +1,9 @@
 // Views.swift
-// YoungtimerGarage - Projet Final iOS Swift
-// Université Paris 8 - 2026
+// Kari Ihab
 
 import Foundation
 
-// MARK: - HTML Base Layout
-
-/// Génère le squelette HTML commun à toutes les pages.
-/// - Parameters:
-///   - title:   Titre de l'onglet navigateur.
-///   - content: HTML injecté dans le <main>.
-///   - error:   Message d'erreur optionnel affiché en bandeau rouge.
+/// Page HTML de base
 func basePage(title: String, content: String, error: String? = nil) -> String {
   let errorBanner =
     error.map { msg in
@@ -57,7 +50,7 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
           min-height: 100vh;
         }
 
-        /* ── NAVBAR ── */
+        /* NAVBAR */
         nav {
           background: var(--dark);
           border-bottom: 2px solid var(--red);
@@ -105,10 +98,10 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
         }
         .btn-add:hover { background: var(--red-h) !important; }
 
-        /* ── MAIN ── */
+        /* MAIN */
         main { max-width: 1280px; margin: 0 auto; padding: 40px 32px 80px; }
 
-        /* ── ERROR BANNER ── */
+        /* BANNIERE D'ERREUR */
         .error-banner {
           background: #2a0008;
           border: 1px solid var(--red);
@@ -123,7 +116,7 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
         }
         .error-banner a { color: var(--lgray); font-size: 13px; }
 
-        /* ── PAGE HEADER ── */
+        /* EN-TETE */
         .page-header {
           margin-bottom: 36px;
           border-bottom: 1px solid var(--border);
@@ -139,7 +132,7 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
         }
         .page-header p { color: var(--gray); margin-top: 6px; font-size: 14px; }
 
-        /* ── SEARCH BAR ── */
+        /* RECHERCHE */
         .search-bar {
           display: flex;
           gap: 10px;
@@ -175,7 +168,7 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
         }
         .search-bar button:hover { background: var(--red-h); }
 
-        /* ── SORT BAR ── */
+        /* TRI */
         .sort-bar {
           display: flex;
           gap: 8px;
@@ -207,7 +200,7 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
           color: var(--red);
         }
 
-        /* ── RESULTS COUNT ── */
+        /* NOMBRE DE RESULTATS */
         .results-count {
           font-family: var(--font-h);
           font-size: 22px;
@@ -217,14 +210,14 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
         }
         .results-count span { color: var(--red); }
 
-        /* ── CARS GRID ── */
+        /* GRILLE DES VOITURES */
         .cars-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
           gap: 2px;
         }
 
-        /* ── CAR CARD ── */
+        /* CARD */
         .car-card {
           background: var(--card);
           border: 1px solid var(--border);
@@ -365,7 +358,7 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
         }
         .btn-offer:hover { background: var(--red-h); }
 
-        /* ── EMPTY STATE ── */
+        /* ETAT VIDE */
         .empty-state {
           text-align: center;
           padding: 80px 20px;
@@ -380,7 +373,7 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
           text-transform: uppercase;
         }
 
-        /* ── DETAIL PAGE ── */
+        /* PAGE DETAIL */
         .detail-back {
           display: inline-flex;
           align-items: center;
@@ -512,7 +505,7 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
         }
         .btn-danger:hover { background: #2e0a0a; }
 
-        /* ── FORM PAGE ── */
+        /* FORMULAIRE */
         .form-container {
           max-width: 680px;
         }
@@ -555,7 +548,7 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
           border-top: 1px solid var(--border);
         }
 
-        /* ── FOOTER ── */
+        /* FOOTER */
         footer {
           border-top: 1px solid var(--border);
           padding: 28px 40px;
@@ -599,27 +592,7 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
     """
 }
 
-// MARK: - Car Icon SVG (placeholder)
-
-/// SVG décoratif utilisé comme placeholder dans les cards et la page détail.
-let carIconSVG = """
-  <svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg" fill="white">
-    <path d="M30 55 L50 30 Q55 24 65 24 L135 24 Q145 24 150 30 L170 55 L180 55
-             Q185 55 185 60 L185 65 Q185 68 182 68 L170 68
-             Q170 75 163 75 Q156 75 156 68 L44 68
-             Q44 75 37 75 Q30 75 30 68 L18 68
-             Q15 68 15 65 L15 60 Q15 55 20 55 Z"/>
-    <circle cx="44" cy="68" r="10" fill="#0a0a0a"/>
-    <circle cx="44" cy="68" r="6"  fill="white" opacity=".15"/>
-    <circle cx="163" cy="68" r="10" fill="#0a0a0a"/>
-    <circle cx="163" cy="68" r="6"  fill="white" opacity=".15"/>
-    <path d="M68 27 L80 43 L120 43 L132 27 Z" fill="#0a0a0a" opacity=".3"/>
-  </svg>
-  """
-
-// MARK: - Condition Badge Helper
-
-/// Retourne la classe CSS correspondant à l'état de la voiture.
+/// Retourne la classe CSS selon l'état
 func conditionClass(_ condition: String) -> String {
   switch condition {
   case "Excellent": return "badge-excellent"
@@ -628,9 +601,7 @@ func conditionClass(_ condition: String) -> String {
   }
 }
 
-// MARK: - INDEX Page (liste + recherche + tri)
-
-/// Page principale : catalogue de toutes les voitures.
+/// Page principale
 func indexPage(cars: [Car], searchQuery: String = "", sortBy: String = "") -> String {
   let header = """
     <div class="page-header">
@@ -648,7 +619,7 @@ func indexPage(cars: [Car], searchQuery: String = "", sortBy: String = "") -> St
     </form>
     """
 
-  // Tri
+  // Boutons de tri
   let sorts = [("brand", "Marque"), ("year", "Année"), ("price", "Prix"), ("mileage", "Km")]
   let sortLinks = sorts.map { (key, label) in
     let active = sortBy == key ? "active" : ""
@@ -662,7 +633,7 @@ func indexPage(cars: [Car], searchQuery: String = "", sortBy: String = "") -> St
     </div>
     """
 
-  // Compteur
+  // Nombre d'annonces
   let count = """
     <p class="results-count">
       <span>\(cars.count)</span> annonce\(cars.count > 1 ? "s" : "")
@@ -670,7 +641,7 @@ func indexPage(cars: [Car], searchQuery: String = "", sortBy: String = "") -> St
     </p>
     """
 
-  // Grille de cards
+  // Liste des cards
   let grid: String
   if cars.isEmpty {
     grid = """
@@ -690,9 +661,7 @@ func indexPage(cars: [Car], searchQuery: String = "", sortBy: String = "") -> St
   )
 }
 
-// MARK: - Car Card Component
-
-/// Génère le HTML d'une card voiture pour la grille.
+/// Card d'une voiture
 func carCard(_ car: Car) -> String {
   let id = car.id ?? 0
   let condClass = conditionClass(car.condition)
@@ -729,6 +698,8 @@ func carCard(_ car: Car) -> String {
           </div>
         </div>
 
+        <div class="car-price">\(car.formattedPrice)</div>
+
         <div class="card-actions">
           <a href="/cars/\(id)" class="btn-detail">Détails</a>
           <a href="/edit/\(id)" class="btn-offer">Modifier →</a>
@@ -737,9 +708,8 @@ func carCard(_ car: Car) -> String {
     </div>
     """
 }
-// MARK: - DETAIL Page
 
-/// Page de détail d'une voiture (bonus +5 pts).
+/// Page détail d'une voiture
 func detailPage(car: Car) -> String {
   let id = car.id ?? 0
   let condClass = conditionClass(car.condition)
@@ -789,10 +759,7 @@ func detailPage(car: Car) -> String {
   return basePage(title: "\(car.brand) \(car.model)", content: content)
 }
 
-// MARK: - ADD / EDIT Form
-
-/// Formulaire d'ajout ou de modification d'une voiture.
-/// Si `car` est fourni → mode édition. Sinon → mode création.
+/// Page formulaire ajout / modification
 func formPage(car: Car? = nil, error: String? = nil) -> String {
   let isEdit = car != nil
   let id = car?.id ?? 0
@@ -874,9 +841,7 @@ func formPage(car: Car? = nil, error: String? = nil) -> String {
   return basePage(title: pageTitle, content: content, error: error)
 }
 
-// MARK: - SEARCH Results Page
-
-/// Page de résultats de recherche (bonus +5 pts).
+/// Page de recherche
 func searchPage(cars: [Car], query: String) -> String {
   let header = """
     <div class="page-header">
@@ -890,7 +855,7 @@ func searchPage(cars: [Car], query: String) -> String {
   )
 }
 
-/// Corps commun entre index et résultats de recherche.
+/// Contenu de la liste des voitures
 private func indexBody(cars: [Car], searchQuery: String, sortBy: String) -> String {
   let count = """
     <p class="results-count">
