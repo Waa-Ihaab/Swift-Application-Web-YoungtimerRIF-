@@ -91,8 +91,8 @@ extension CarFormInput {
             throw ValidationError.missingField("modèle")
         }
         guard let yearStr = year, let yearInt = Int(yearStr),
-              yearInt >= 1970 && yearInt <= 2010 else {
-            throw ValidationError.invalidField("année", "Entrez une année entre 1970 et 2010")
+              yearInt >= 1960 && yearInt <= 2010 else {
+            throw ValidationError.invalidField("année", "Entrez une année entre 1960 et 2010")
         }
         guard let mileageStr = mileage, let mileageInt = Int(mileageStr),
               mileageInt >= 0 else {

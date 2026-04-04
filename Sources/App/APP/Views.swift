@@ -606,7 +606,7 @@ func indexPage(cars: [Car], searchQuery: String = "", sortBy: String = "") -> St
   let header = """
     <div class="page-header">
       <h1>Acheter des Youngtimers</h1>
-      <p>Voitures des années 1970–2010 · Collection &amp; Usage</p>
+      <p>Voitures des années 1960–2010 · Collection &amp; Usage</p>
     </div>
     """
 
@@ -799,7 +799,7 @@ func formPage(car: Car? = nil, error: String? = nil) -> String {
           <label for="year">Année *</label>
           <input type="number" id="year" name="year"
                  value="\(car.map { String($0.year) } ?? "")"
-                 placeholder="ex: 1989" min="1970" max="2010" required/>
+                 placeholder="ex: 1989" min="1960" max="2010" required/>
         </div>
         <div class="form-group">
           <label for="mileage">Kilométrage (km) *</label>
