@@ -396,10 +396,9 @@ func basePage(title: String, content: String, error: String? = nil) -> String {
         }
         .detail-back:hover { color: var(--red); }
         .detail-layout {
-          display: grid;
-          grid-template-columns: 1fr 380px;
-          gap: 2px;
-          align-items: start;
+          display: block;
+          max-width: 600px;
+          margin: 0 auto;
         }
         .detail-img {
           background: #181818;
@@ -730,11 +729,6 @@ func carCard(_ car: Car) -> String {
           </div>
         </div>
 
-        <div class="car-price">
-          \(car.formattedPrice)
-          <small>TVA non récupérable</small>
-        </div>
-
         <div class="card-actions">
           <a href="/cars/\(id)" class="btn-detail">Détails</a>
           <a href="/edit/\(id)" class="btn-offer">Modifier →</a>
@@ -753,13 +747,12 @@ func detailPage(car: Car) -> String {
   let content = """
     <a href="/" class="detail-back">← Retour au catalogue</a>
     <div class="detail-layout">
-      <div class="detail-img">
-        \(carIconSVG)
-        <span class="car-year-badge" style="top:16px;left:16px">\(car.year)</span>
-        <span class="car-condition-badge \(condClass)" style="top:16px;right:16px">\(car.condition)</span>
-      </div>
       <div class="detail-info">
-        <p class="detail-ref">Réf. #\(String(format: "%06d", id))</p>
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+          <span class="car-year-badge" style="position:static;">\(car.year)</span>
+          <span class="car-condition-badge \(condClass)" style="position:static;">\(car.condition)</span>
+        </div>
+        <p class="detail-ref">Réf. #\(String(format: "%06d", id))</p>        
         <h1 class="detail-title">\(car.brand)</h1>
         <p class="detail-subtitle">\(car.model)</p>
         <div class="detail-price">\(car.formattedPrice)</div>
