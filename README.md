@@ -5,7 +5,7 @@
 
 ## Description
 
-**YoungtimerRIF** est une application web CRUD développée entièrement en Swift, permettant de consulter, ajouter, modifier et supprimer des annonces de voitures youngtimers - des véhicules de collection des années **1970 à 2010**.
+**YoungtimerRIF** est une application web CRUD développée entièrement en Swift, permettant de consulter, ajouter, modifier et supprimer des annonces de voitures youngtimers - des véhicules de collection des années **1960 à 2010**.
 
 Chaque annonce affiche la marque, le modèle, l'année, le kilométrage, le prix et l'état du véhicule. L'application propose également une **recherche** par marque, modèle ou couleur, ainsi qu'un **tri** par différents critères.
 
